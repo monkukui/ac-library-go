@@ -8,5 +8,5 @@ ACL については以下をご覧ください。
 - [AtCoder Library - Codeforces](https://codeforces.com/blog/entry/82400)
 
 ## Contribute 方法
-- 1. ALC で提供されているアルゴリズム・データ構造を実装して，PR を送ってください。
-- 2. その他お気軽 issue や draft PR も歓迎です。
+- ALC で提供されているアルゴリズム・データ構造を実装して，PR を送ってください。
+- その他お気軽 issue や draft PR も歓迎です。
