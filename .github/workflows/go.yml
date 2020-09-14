@@ -8,8 +8,8 @@ on:
 
 jobs:
 
-  build:
-    name: build
+  vet:
+    name: vet
     runs-on: ubuntu-latest
     steps:
 
@@ -25,7 +25,7 @@ jobs:
       run: go mod download
 
     - name: Build
-      run: go build -v .
+      run: go vet -v ./...
 
   test:
     name: test
@@ -44,4 +44,4 @@ jobs:
       run: go mod download
 
     - name: Test
-      run: go test -v .
+      run: go test -v ./...
