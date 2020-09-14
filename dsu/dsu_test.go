@@ -12,6 +12,9 @@ func TestDisjointSetUnion(t *testing.T) {
 		t.FailNow()
 	}
 	d.Merge(1, 2)
+	if !d.Same(0, 2) {
+		t.FailNow()
+	}
 	if !d.Same(1, 2) {
 		t.FailNow()
 	}
