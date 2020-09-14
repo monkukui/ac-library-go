@@ -24,7 +24,7 @@ jobs:
     - name: Get dependencies
       run: go mod download
 
-    - name: Build
+    - name: Vet
       run: go vet -v ./...
 
   test:
