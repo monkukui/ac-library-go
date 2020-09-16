@@ -35,7 +35,7 @@ func main() {
 
 	n, m := getInt(), getInt()
 
-	g := scc.SccGraph(n)
+	g := scc.NewGraph(n)
 	for i := 0; i < m; i++ {
 		u, v := getInt(), getInt()
 		g.AddEdge(u, v)
