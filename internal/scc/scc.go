@@ -1,13 +1,5 @@
 package internal
 
-// ** copy from here to your source code **
-//
-// scc :  Strong Connected Component
-//  1. go lang have no generics, so implement int(long long)
-//  data type only.
-//  2. do not care overflow
-//
-
 type sccPair struct {
 	first, second int
 }
@@ -41,33 +33,36 @@ func initCsr(n int, edges []sccPair) *csr {
 	return &ret
 }
 
-type sccGraph struct {
+// SccGraph :
+type SccGraph struct {
 	n     int
 	edges []sccPair
 }
 
-func newsccGraph(n int) *sccGraph {
-	var s sccGraph
+// NewSccGraph :
+func NewSccGraph(n int) *SccGraph {
+	var s SccGraph
 	s.n = n
 	return &s
 }
 
-func (s *sccGraph) numVertics() int {
+func (s *SccGraph) numVertics() int {
 	return s.n
 }
 
-func (s *sccGraph) addEdge(from, to int) {
+// AddEdge :
+func (s *SccGraph) AddEdge(from, to int) {
 	s.edges = append(s.edges, sccPair{from, to})
 }
 
-func (s *sccGraph) min(a, b int) int {
+func (s *SccGraph) min(a, b int) int {
 	if a > b {
 		return b
 	}
 	return a
 }
 
-func (s *sccGraph) sccIds() sccPair2 {
+func (s *SccGraph) sccIds() sccPair2 {
 	g := initCsr(s.n, s.edges)
 	nowOrd, groupNum := 0, 0
 	visited := make([]int, 0, s.n)
@@ -116,7 +111,8 @@ func (s *sccGraph) sccIds() sccPair2 {
 	return sccPair2{groupNum, ids}
 }
 
-func (s *sccGraph) scc() [][]int {
+// Scc :
+func (s *SccGraph) Scc() [][]int {
 	ids := s.sccIds()
 	groupNum := ids.first
 	counts := make([]int, groupNum)
@@ -131,26 +127,4 @@ func (s *sccGraph) scc() [][]int {
 		groups[ids.second[i]] = append(groups[ids.second[i]], i)
 	}
 	return groups
-}
-
-// SccGRAPH :
-type SccGRAPH struct {
-	internal *sccGraph
-}
-
-// SccGraph :
-func SccGraph(n int) *SccGRAPH {
-	var ret SccGRAPH
-	ret.internal = newsccGraph(n)
-	return &ret
-}
-
-// AddEdge :
-func (s *SccGRAPH) AddEdge(from, to int) {
-	s.internal.addEdge(from, to)
-}
-
-// Scc :
-func (s *SccGRAPH) Scc() [][]int {
-	return s.internal.scc()
 }

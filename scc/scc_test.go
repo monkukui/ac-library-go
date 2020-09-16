@@ -6,7 +6,7 @@ import (
 )
 
 func TestSimple(t *testing.T) {
-	g := SccGraph(2)
+	g := NewGraph(2)
 	g.AddEdge(0, 1)
 	g.AddEdge(1, 0)
 	scc := g.Scc()
@@ -16,7 +16,7 @@ func TestSimple(t *testing.T) {
 }
 
 func TestSelfLoop(t *testing.T) {
-	g := SccGraph(2)
+	g := NewGraph(2)
 	g.AddEdge(0, 0)
 	g.AddEdge(0, 0)
 	g.AddEdge(1, 1)
@@ -27,7 +27,7 @@ func TestSelfLoop(t *testing.T) {
 }
 
 func TestAlpcSample(t *testing.T) {
-	g := SccGraph(6)
+	g := NewGraph(6)
 	edges := [][2]int{{1, 4}, {5, 2}, {3, 0}, {5, 5}, {4, 1}, {0, 3}, {4, 2}}
 	for _, e := range edges {
 		g.AddEdge(e[0], e[1])
