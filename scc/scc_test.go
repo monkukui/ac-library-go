@@ -1,6 +1,7 @@
 package scc
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -37,10 +38,8 @@ func TestAlpcSample(t *testing.T) {
 		if len(s) != len(ref[i]) {
 			t.Fatal("failed AlpcSample 0 ")
 		}
-		for j, x := range s {
-			if x != ref[i][j] {
-				t.Fatal("failed AlpcSample 1 ")
-			}
+		if !reflect.DeepEqual(scc, ref) {
+			t.Fatal("failed AlpcSample 1 ")
 		}
 	}
 }
