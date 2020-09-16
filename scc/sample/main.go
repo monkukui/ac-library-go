@@ -24,11 +24,7 @@ func getInt() int {
 	return i
 }
 
-func getString() string {
-	sc.Scan()
-	return sc.Text()
-}
-
+// AC code of https://atcoder.jp/contests/practice2/tasks/practice2_g
 func main() {
 	sc.Split(bufio.ScanWords)
 	sc.Buffer([]byte{}, 1000000)

@@ -1,10 +1,10 @@
-package internal
+package scc
 
-type sccPair struct {
+type sccFromToPair struct {
 	first, second int
 }
 
-type sccPair2 struct {
+type sccIdPair struct {
 	first  int
 	second []int
 }
@@ -14,11 +14,11 @@ type csr struct {
 	elist []int
 }
 
-func initCsr(n int, edges []sccPair) *csr {
+func initCsr(n int, edges *[]sccFromToPair) *csr {
 	var ret csr
 	ret.start = make([]int, n+1)
-	ret.elist = make([]int, len(edges))
-	for _, e := range edges {
+	ret.elist = make([]int, len(*edges))
+	for _, e := range *edges {
 		ret.start[e.first+1]++
 	}
 	for i := 1; i <= n; i++ {
@@ -26,7 +26,7 @@ func initCsr(n int, edges []sccPair) *csr {
 	}
 	counter := make([]int, len(ret.start))
 	copy(counter, ret.start)
-	for _, e := range edges {
+	for _, e := range *edges {
 		ret.elist[counter[e.first]] = e.second
 		counter[e.first]++
 	}
@@ -36,11 +36,11 @@ func initCsr(n int, edges []sccPair) *csr {
 // SccGraph :
 type SccGraph struct {
 	n     int
-	edges []sccPair
+	edges []sccFromToPair
 }
 
-// NewSccGraph :
-func NewSccGraph(n int) *SccGraph {
+// NewGraph :
+func NewGraph(n int) *SccGraph {
 	var s SccGraph
 	s.n = n
 	return &s
@@ -52,7 +52,7 @@ func (s *SccGraph) numVertics() int {
 
 // AddEdge :
 func (s *SccGraph) AddEdge(from, to int) {
-	s.edges = append(s.edges, sccPair{from, to})
+	s.edges = append(s.edges, sccFromToPair{from, to})
 }
 
 func (s *SccGraph) min(a, b int) int {
@@ -62,8 +62,9 @@ func (s *SccGraph) min(a, b int) int {
 	return a
 }
 
-func (s *SccGraph) sccIds() sccPair2 {
-	g := initCsr(s.n, s.edges)
+// SccIds :
+func (s *SccGraph) SccIds() sccIdPair {
+	g := initCsr(s.n, &s.edges)
 	nowOrd, groupNum := 0, 0
 	visited := make([]int, 0, s.n)
 	low := make([]int, s.n)
@@ -108,12 +109,12 @@ func (s *SccGraph) sccIds() sccPair2 {
 	for i := 0; i < len(ids); i++ {
 		ids[i] = groupNum - 1 - ids[i]
 	}
-	return sccPair2{groupNum, ids}
+	return sccIdPair{groupNum, ids}
 }
 
 // Scc :
 func (s *SccGraph) Scc() [][]int {
-	ids := s.sccIds()
+	ids := s.SccIds()
 	groupNum := ids.first
 	counts := make([]int, groupNum)
 	for _, x := range ids.second {

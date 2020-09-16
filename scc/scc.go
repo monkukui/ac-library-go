@@ -10,7 +10,7 @@ type SccGraph struct {
 // NewGraph :
 func NewGraph(n int) *SccGraph {
 	var ret SccGraph
-	ret.internal = internal.NewSccGraph(n)
+	ret.internal = internal.NewGraph(n)
 	return &ret
 }
 
