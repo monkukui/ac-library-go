@@ -11,3 +11,4 @@ jobs:
         uses: reviewdog/action-golangci-lint@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
