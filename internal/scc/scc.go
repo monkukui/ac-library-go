@@ -14,11 +14,11 @@ type csr struct {
 	elist []int
 }
 
-func initCsr(n int, edges *[]sccFromToPair) *csr {
+func initCsr(n int, edges []*sccFromToPair) *csr {
 	var ret csr
 	ret.start = make([]int, n+1)
-	ret.elist = make([]int, len(*edges))
-	for _, e := range *edges {
+	ret.elist = make([]int, len(edges))
+	for _, e := range edges {
 		ret.start[e.first+1]++
 	}
 	for i := 1; i <= n; i++ {
@@ -26,7 +26,7 @@ func initCsr(n int, edges *[]sccFromToPair) *csr {
 	}
 	counter := make([]int, len(ret.start))
 	copy(counter, ret.start)
-	for _, e := range *edges {
+	for _, e := range edges {
 		ret.elist[counter[e.first]] = e.second
 		counter[e.first]++
 	}
@@ -36,7 +36,7 @@ func initCsr(n int, edges *[]sccFromToPair) *csr {
 // SccGraph :
 type SccGraph struct {
 	n     int
-	edges []sccFromToPair
+	edges []*sccFromToPair
 }
 
 // NewGraph :
@@ -52,7 +52,7 @@ func (s *SccGraph) numVertics() int {
 
 // AddEdge :
 func (s *SccGraph) AddEdge(from, to int) {
-	s.edges = append(s.edges, sccFromToPair{from, to})
+	s.edges = append(s.edges, &sccFromToPair{from, to})
 }
 
 func (s *SccGraph) min(a, b int) int {
@@ -64,7 +64,7 @@ func (s *SccGraph) min(a, b int) int {
 
 // SccIds :
 func (s *SccGraph) SccIds() sccIdPair {
-	g := initCsr(s.n, &s.edges)
+	g := initCsr(s.n, s.edges)
 	nowOrd, groupNum := 0, 0
 	visited := make([]int, 0, s.n)
 	low := make([]int, s.n)
