@@ -11,7 +11,7 @@ func TestSimple(t *testing.T) {
 	g.AddEdge(1, 0)
 	scc := g.Scc()
 	if len(scc) != 1 {
-		t.Fatal("failed Simple")
+		t.Fatalf("expected:%d actual:%d\n", 1, len(scc))
 	}
 }
 
@@ -22,7 +22,7 @@ func TestSelfLoop(t *testing.T) {
 	g.AddEdge(1, 1)
 	scc := g.Scc()
 	if len(scc) != 2 {
-		t.Fatal("failed Self Loop")
+		t.Fatalf("expected:%d actual:%d\n", 2, len(scc))
 	}
 }
 
@@ -34,12 +34,7 @@ func TestAlpcSample(t *testing.T) {
 	}
 	scc := g.Scc()
 	ref := [][]int{{5}, {1, 4}, {2}, {0, 3}}
-	for i, s := range scc {
-		if len(s) != len(ref[i]) {
-			t.Fatal("failed AlpcSample 0 ")
-		}
-		if !reflect.DeepEqual(scc, ref) {
-			t.Fatal("failed AlpcSample 1 ")
-		}
+	if !reflect.DeepEqual(scc, ref) {
+		t.Fatalf("expected:%d actual:%d\n", ref, scc)
 	}
 }
