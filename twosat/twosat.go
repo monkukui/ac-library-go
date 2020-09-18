@@ -131,7 +131,7 @@ func New(n int) *TwoSat {
 }
 
 func (ts *TwoSat) internalJudge(f bool, a int, b int) int {
-	if f == true {
+	if f {
 		return a
 	}
 	return b

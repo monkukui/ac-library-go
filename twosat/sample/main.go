@@ -49,14 +49,14 @@ func main() {
 		}
 	}
 
-	if ts.Satisfiable() == false {
+	if !ts.Satisfiable() {
 		fmt.Println("No")
 	} else {
 		fmt.Println("Yes")
 
 		answer := ts.Answer()
 		for i := 0; i < n; i++ {
-			if answer[i] == true {
+			if answer[i] {
 				fmt.Println(x[i])
 			} else {
 				fmt.Println(y[i])
