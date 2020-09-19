@@ -46,10 +46,6 @@ func NewGraph(n int) *SccGraph {
 	return &s
 }
 
-func (s *SccGraph) numVertics() int {
-	return s.n
-}
-
 // AddEdge :
 func (s *SccGraph) AddEdge(from, to int) {
 	s.edges = append(s.edges, &sccFromToPair{from, to})
