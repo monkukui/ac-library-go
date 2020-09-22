@@ -5,8 +5,8 @@ type sccFromToPair struct {
 }
 
 type sccIdPair struct {
-	first  int
-	second []int
+	First  int
+	Second []int
 }
 
 type csr struct {
@@ -111,17 +111,17 @@ func (s *SccGraph) SccIds() sccIdPair {
 // Scc :
 func (s *SccGraph) Scc() [][]int {
 	ids := s.SccIds()
-	groupNum := ids.first
+	groupNum := ids.First
 	counts := make([]int, groupNum)
-	for _, x := range ids.second {
+	for _, x := range ids.Second {
 		counts[x]++
 	}
-	groups := make([][]int, ids.first)
+	groups := make([][]int, ids.First)
 	for i := 0; i < groupNum; i++ {
 		groups[i] = make([]int, 0, counts[i])
 	}
 	for i := 0; i < s.n; i++ {
-		groups[ids.second[i]] = append(groups[ids.second[i]], i)
+		groups[ids.Second[i]] = append(groups[ids.Second[i]], i)
 	}
 	return groups
 }
