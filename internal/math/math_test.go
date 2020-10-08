@@ -1,6 +1,8 @@
 package math
 
 import (
+	"fmt"
+	"reflect"
 	"testing"
 
 	"math"
@@ -50,7 +52,8 @@ func isPrimeNaive(n int) bool {
 	return true
 }
 
-// Test Barrett は、mod m での乗算が正しく行えることをテストします。
+// TestBarrett は、mod m での乗算が正しく行えることをテストします。
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L44-L56
 func TestBarrett(t *testing.T) {
 	for m := uint(1); m <= 100; m++ {
 		bt := New(m)
@@ -63,4 +66,33 @@ func TestBarrett(t *testing.T) {
 
 	bt := New(1)
 	assert.Exactly(t, uint(0), bt.Mul(0, 0))
+}
+
+// TestBarrettBorder は、mod m での乗算が、境界でも正しく行えることをテストします。
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L58-L78
+func TestBarrettBorder(t *testing.T) {
+	modUpper := uint(math.MaxInt32)
+	for mod := modUpper; mod >= modUpper-20; mod-- {
+		bt := New(mod)
+		v := make([]uint, 10*4)
+		for i := uint(0); i < 10; i++ {
+			v[i*4+0] = i
+			v[i*4+1] = mod - i
+			v[i*4+2] = mod/2 + i
+			v[i*4+3] = mod/2 - i
+		}
+		for _, a := range v {
+			a2 := int64(a)
+			if a2*a2%int64(mod)*a2%int64(mod) < 0 {
+				fmt.Println(a2, a2*a2, reflect.TypeOf(a2), reflect.TypeOf(a))
+				fmt.Println(math.MaxUint32, math.MaxInt64)
+				fmt.Println(bt.Mul(a, bt.Mul(a, a)))
+			}
+			assert.Exactly(t, uint(((a2*a2)%int64(mod)*a2)%int64(mod)), bt.Mul(a, bt.Mul(a, a)))
+			for _, b := range v {
+				b2 := int64(b)
+				assert.Equal(t, uint((a2*b2)%int64(mod)), bt.Mul(a, b))
+			}
+		}
+	}
 }
