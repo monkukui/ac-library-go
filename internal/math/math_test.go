@@ -38,7 +38,7 @@ func floorSumNaive(n, m, a, b int64) int64 {
 }
 
 func isPrimeNaive(n int) bool {
-	if 0 <= n && n <= math.MaxInt32 {
+	if !(0 <= n && n <= math.MaxInt32) {
 		panic("")
 	}
 	if n == 0 || n == 1 {
@@ -94,5 +94,24 @@ func TestBarrettBorder(t *testing.T) {
 				assert.Equal(t, uint((a2*b2)%int64(mod)), bt.Mul(a, b))
 			}
 		}
+	}
+}
+
+// TestIsPrime は、素数判定が正しく行えることをテストします。
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L80-L93
+func TestIsPrime(t *testing.T) {
+	assert.False(t, IsPrime(121))
+	assert.False(t, IsPrime(11*13))
+	assert.True(t, IsPrime(1000000007))
+	assert.False(t, IsPrime(1000000008))
+	assert.True(t, IsPrime(1000000009))
+
+	for i := 0; i <= 10000; i++ {
+		assert.Exactly(t, isPrimeNaive(i), IsPrime(i))
+	}
+
+	for i := 0; i <= 10000; i++ {
+		x := math.MaxInt32 - i
+		assert.Exactly(t, isPrimeNaive(x), IsPrime(x))
 	}
 }

@@ -76,7 +76,7 @@ func IsPrime(n int) bool {
 		return false
 	}
 	if n == 2 || n == 7 || n == 61 {
-		return false
+		return true
 	}
 	if n%2 == 0 {
 		return false
