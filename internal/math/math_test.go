@@ -11,7 +11,7 @@ import (
 )
 
 func gcd(a, b int64) int64 {
-	if 0 <= a && a <= b {
+	if !(0 <= a && 0 <= b) {
 		panic("")
 	}
 	if b == 0 {
@@ -74,12 +74,12 @@ func TestBarrettBorder(t *testing.T) {
 	modUpper := uint(math.MaxInt32)
 	for mod := modUpper; mod >= modUpper-20; mod-- {
 		bt := New(mod)
-		v := make([]uint, 10*4)
+		var v []uint
 		for i := uint(0); i < 10; i++ {
-			v[i*4+0] = i
-			v[i*4+1] = mod - i
-			v[i*4+2] = mod/2 + i
-			v[i*4+3] = mod/2 - i
+			v = append(v, i)
+			v = append(v, mod-i)
+			v = append(v, mod/2+i)
+			v = append(v, mod/2-i)
 		}
 		for _, a := range v {
 			a2 := int64(a)
@@ -113,5 +113,48 @@ func TestIsPrime(t *testing.T) {
 	for i := 0; i <= 10000; i++ {
 		x := math.MaxInt32 - i
 		assert.Exactly(t, isPrimeNaive(x), IsPrime(x))
+	}
+}
+
+// TestInvGcdBound は、最大公約数が正しく求められることをテストします。
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L116-L155
+func TestInvGcdBound(t *testing.T) {
+	var pred []int64
+	for i := int64(0); i <= 10; i++ {
+		pred = append(pred, i)
+		pred = append(pred, -i)
+		pred = append(pred, math.MinInt64+i)
+		pred = append(pred, math.MaxInt64-i)
+
+		pred = append(pred, math.MinInt64/2+i)
+		pred = append(pred, math.MinInt64/2-i)
+		pred = append(pred, math.MaxInt64/2+i)
+		pred = append(pred, math.MaxInt64/2-i)
+
+		pred = append(pred, math.MinInt64/3+i)
+		pred = append(pred, math.MinInt64/3-i)
+		pred = append(pred, math.MaxInt64/3+i)
+		pred = append(pred, math.MaxInt64/3-i)
+
+		pred = append(pred, int64(998244353))
+		pred = append(pred, int64(1000000007))
+		pred = append(pred, int64(1000000009))
+		pred = append(pred, int64(-998244353))
+		pred = append(pred, int64(-1000000007))
+		pred = append(pred, int64(-1000000009))
+	}
+
+	for _, a := range pred {
+		for _, b := range pred {
+			if b <= 0 {
+				continue
+			}
+			a2 := SafeMod(a, b)
+			eg, x := InvGcd(a, b)
+			g := gcd(a2, b)
+			assert.Exactly(t, g, eg)
+			assert.LessOrEqual(t, int64(0), x)
+			assert.LessOrEqual(t, x, b/eg)
+		}
 	}
 }
