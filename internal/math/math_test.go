@@ -40,6 +40,53 @@ func isPrimitiveRoot(m, g int) bool {
 	return true
 }
 
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/utils/math_test.cpp#L6-L16
+func TestFactors(t *testing.T) {
+	for m := 1; m <= 500000; m++ {
+		f := factors(m)
+		m2 := m
+		for _, x := range f {
+			assert.Exactly(t, 0, m%x)
+			for m2%x == 0 {
+				m2 /= x
+			}
+		}
+		assert.Exactly(t, 1, m2)
+	}
+}
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/utils/math_test.cpp#L18-L30
+func isPrimitiveRootNaive(m, g int) bool {
+	if !(1 <= g && g < m) {
+		panic("")
+	}
+	x := 1
+	for i := 1; i <= m-2; i++ {
+		x = int((int64)(x) * int64(g) % int64(m))
+		// x == n^i
+		if x == 1 {
+			return false
+		}
+	}
+	x = int(int64(x) * int64(g) % int64(m))
+	if x != 1 {
+		panic("")
+	}
+	return true
+}
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/utils/math_test.cpp#L32-L39
+func TestIsPrimitiveRootTest(t *testing.T) {
+	for m := 2; m <= 500; m++ {
+		if !IsPrime(m) {
+			continue
+		}
+		for g := 1; g < m; g++ {
+			assert.Exactly(t, isPrimitiveRootNaive(m, g), isPrimitiveRoot(m, g))
+		}
+	}
+}
+
 func gcd(a, b int64) int64 {
 	if !(0 <= a && 0 <= b) {
 		panic("")
@@ -204,6 +251,7 @@ func TestPrimitiveRootNaive(t *testing.T) {
 	}
 }
 
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L199-L206
 func TestPrimitiveRoot(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		x := math.MaxInt32 - i
