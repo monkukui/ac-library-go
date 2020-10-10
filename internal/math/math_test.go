@@ -203,3 +203,13 @@ func TestPrimitiveRootNaive(t *testing.T) {
 		assert.Exactly(t, 1, x)
 	}
 }
+
+func TestPrimitiveRoot(t *testing.T) {
+	for i := 0; i < 1000; i++ {
+		x := math.MaxInt32 - i
+		if !IsPrime(x) {
+			continue
+		}
+		assert.True(t, isPrimitiveRoot(x, PrimitiveRoot(x)))
+	}
+}
