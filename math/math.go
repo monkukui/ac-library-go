@@ -23,7 +23,7 @@ func PowMod(x, n int64, m int) int64 {
 		y = bt.Mul(y, y)
 		n >>= 1
 	}
-	return r
+	return int64(r)
 }
 
 func InvMod(x, m int64) int64 {
@@ -61,7 +61,7 @@ func Crt(r, m []int64) (int64, int64) {
 			}
 			continue
 		}
-		g, im := InvGcd(m0, m1)
+		g, im := internal.InvGcd(m0, m1)
 
 		u1 := m1 / g
 		if (r1-r0)%g > 1 {
@@ -90,8 +90,8 @@ func FloorSum(n, m, a, b int64) int64 {
 		b %= m
 	}
 
-	yMax += (a*n + b) / m
-	xMax = (yMax*m - b)
+	yMax := (a*n + b) / m
+	xMax := (yMax*m - b)
 	if yMax == 0 {
 		return ans
 	}
