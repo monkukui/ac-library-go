@@ -21,3 +21,14 @@ func PowMod(x, n int64, m int) int64 {
 	}
 	return r
 }
+
+func InvMod(x, m int64) int64 {
+	if !(1 <= m) {
+		panic("")
+	}
+	g, x := internal.InvGcd(x, m)
+	if g != 1 {
+		panic("")
+	}
+	return x
+}
