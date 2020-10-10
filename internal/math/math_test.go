@@ -10,6 +10,36 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// https://github.com/atcoder/ac-library/blob/master/test/utils/math.hpp#L5-L17
+func factors(m int) []int {
+	var result []int
+	for i := 2; int64(i)*int64(i) <= int64(m); i++ {
+		if m%i == 0 {
+			result = append(result, i)
+		}
+		for m%i == 0 {
+			m /= i
+		}
+	}
+	if m > 1 {
+		result = append(result, m)
+	}
+	return result
+}
+
+// https://github.com/atcoder/ac-library/blob/master/test/utils/math.hpp#L19-L26
+func isPrimitiveRoot(m, g int) bool {
+	if !(1 <= g && g < m) {
+		panic("")
+	}
+	for _, x := range factors(m - 1) {
+		if PowMod(int64(g), int64((m-1)/x), m) == 1 {
+			return false
+		}
+	}
+	return true
+}
+
 func gcd(a, b int64) int64 {
 	if !(0 <= a && 0 <= b) {
 		panic("")
