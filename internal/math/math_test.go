@@ -52,7 +52,6 @@ func isPrimeNaive(n int) bool {
 	return true
 }
 
-// TestBarrett は、mod m での乗算が正しく行えることをテストします。
 // https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L44-L56
 func TestBarrett(t *testing.T) {
 	for m := uint(1); m <= 100; m++ {
@@ -68,7 +67,6 @@ func TestBarrett(t *testing.T) {
 	assert.Exactly(t, uint(0), bt.Mul(0, 0))
 }
 
-// TestBarrettBorder は、mod m での乗算が、境界でも正しく行えることをテストします。
 // https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L58-L78
 func TestBarrettBorder(t *testing.T) {
 	modUpper := uint(math.MaxInt32)
@@ -97,7 +95,6 @@ func TestBarrettBorder(t *testing.T) {
 	}
 }
 
-// TestIsPrime は、素数判定が正しく行えることをテストします。
 // https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L80-L93
 func TestIsPrime(t *testing.T) {
 	assert.False(t, IsPrime(121))
@@ -116,7 +113,6 @@ func TestIsPrime(t *testing.T) {
 	}
 }
 
-// TestInvGcdBound は、最大公約数が正しく求められることをテストします。
 // https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L116-L155
 func TestInvGcdBound(t *testing.T) {
 	var pred []int64
@@ -156,5 +152,24 @@ func TestInvGcdBound(t *testing.T) {
 			assert.LessOrEqual(t, int64(0), x)
 			assert.LessOrEqual(t, x, b/eg)
 		}
+	}
+}
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L157-L172
+func TestPrimitiveRootNaive(t *testing.T) {
+	for m := 2; m <= 1000; m++ {
+		if !IsPrime(m) {
+			continue
+		}
+		n := PrimitiveRoot(m)
+		assert.LessOrEqual(t, 1, n)
+		assert.Less(t, n, m)
+		x := 1
+		for i := 1; i <= m-2; i++ {
+			x = int(int64(x) * int64(n) % int64(m))
+			assert.NotEqual(t, 1, x)
+		}
+		x = int(int64(x) * int64(n) % int64(m))
+		assert.Exactly(t, 1, x)
 	}
 }
