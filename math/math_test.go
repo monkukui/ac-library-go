@@ -119,3 +119,10 @@ func TestFloorSum(t *testing.T) {
 		}
 	}
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L105-L109
+func TestCrtHand(t *testing.T) {
+	rem, mod := Crt([]int64{1, 2, 1}, []int64{2, 3, 2})
+	assert.Exactly(t, int64(5), rem)
+	assert.Exactly(t, int64(6), mod)
+}
