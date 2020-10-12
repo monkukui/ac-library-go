@@ -126,3 +126,55 @@ func TestCrtHand(t *testing.T) {
 	assert.Exactly(t, int64(5), rem)
 	assert.Exactly(t, int64(6), mod)
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L111-L130
+func TestCrt2(t *testing.T) {
+	for a := int64(1); a <= 20; a++ {
+		for b := int64(1); b <= 20; b++ {
+			for c := int64(-10); c <= 10; c++ {
+				for d := int64(-10); d <= 10; d++ {
+					rem, mod := Crt([]int64{c, d}, []int64{a, b})
+					if mod == 0 {
+						for x := int64(0); x < a*b/gcd(a, b); x++ {
+							assert.True(t, x%a != c || x%b != d)
+						}
+						continue
+					}
+					assert.Exactly(t, a*b/gcd(a, b), mod)
+					assert.Exactly(t, internal.SafeMod(c, a), rem%a)
+					assert.Exactly(t, internal.SafeMod(d, b), rem%b)
+				}
+			}
+		}
+	}
+}
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L132-L159
+func TestCrt3(t *testing.T) {
+	for a := int64(1); a <= 5; a++ {
+		for b := int64(1); b <= 5; b++ {
+			for c := int64(1); c <= 5; c++ {
+				for d := int64(-5); d <= 5; d++ {
+					for e := int64(-5); e <= 5; e++ {
+						for f := int64(-5); f <= 5; f++ {
+							rem, mod := Crt([]int64{d, e, f}, []int64{a, b, c})
+							lcm := a * b / gcd(a, b)
+							lcm = lcm * c / gcd(lcm, c)
+							if mod == 0 {
+								for x := int64(0); x < lcm; x++ {
+									assert.True(t, x%a != d || x%b != e || x%c != f)
+								}
+								continue
+							}
+
+							assert.Exactly(t, lcm, mod)
+							assert.Exactly(t, internal.SafeMod(d, a), rem%a)
+							assert.Exactly(t, internal.SafeMod(e, b), rem%b)
+							assert.Exactly(t, internal.SafeMod(f, c), rem%c)
+						}
+					}
+				}
+			}
+		}
+	}
+}

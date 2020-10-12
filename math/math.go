@@ -1,6 +1,8 @@
 package math
 
-import internal "github.com/monkukui/ac-library-go/internal/math"
+import (
+	internal "github.com/monkukui/ac-library-go/internal/math"
+)
 
 func swap(a, b int64) (int64, int64) {
 	return b, a
@@ -64,7 +66,7 @@ func Crt(r, m []int64) (int64, int64) {
 		g, im := internal.InvGcd(m0, m1)
 
 		u1 := m1 / g
-		if (r1-r0)%g > 1 {
+		if (r1-r0)%g != 0 {
 			return 0, 0
 		}
 
