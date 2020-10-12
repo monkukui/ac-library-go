@@ -190,3 +190,103 @@ func TestCrtOverflow(t *testing.T) {
 	assert.Exactly(t, r0, rem%m0)
 	assert.Exactly(t, r1, rem%m1)
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L172-L227
+func TestCrtBound(t *testing.T) {
+	INF := int64(math.MaxInt64)
+	var pred []int64
+	for i := int64(1); i <= 10; i++ {
+		pred = append(pred, i)
+		pred = append(pred, INF-(i-1))
+	}
+	pred = append(pred, 998244353)
+	pred = append(pred, 1000000007)
+	pred = append(pred, 1000000009)
+
+	for _, ab := range [][2]int64{
+		{INF, INF},
+		{1, INF},
+		{INF, 1},
+		{7, INF},
+		{INF / 337, 337},
+		{2, (INF - 1) / 2}} {
+
+		a := ab[0]
+		b := ab[1]
+		for ph := 0; ph < 2; ph++ {
+			for _, ans := range pred {
+				rem, mod := Crt([]int64{ans % a, ans % b}, []int64{a, b})
+				lcm := a / gcd(a, b) * b
+				assert.Exactly(t, lcm, mod)
+				assert.Exactly(t, ans%lcm, rem)
+			}
+			a, b = swap(a, b)
+		}
+	}
+
+	for _, factorInf := range permutations([]int64{49, 73, 127, 337, 92737, 649657}) {
+		for _, ans := range pred {
+			var r, m []int64
+			for _, f := range factorInf {
+				r = append(r, ans%f)
+				m = append(m, f)
+			}
+			rem, mod := Crt(r, m)
+			assert.Exactly(t, ans%INF, rem)
+			assert.Exactly(t, INF, mod)
+		}
+	}
+
+	for _, factorInf := range permutations([]int64{2, 3, 715827883, 2147483647}) {
+		for _, ans := range pred {
+			var r, m []int64
+			for _, f := range factorInf {
+				r = append(r, ans%f)
+				m = append(m, f)
+			}
+			rem, mod := Crt(r, m)
+			assert.Exactly(t, ans%(INF-1), rem)
+			assert.Exactly(t, INF-1, mod)
+		}
+	}
+}
+
+// https://stackoverflow.com/questions/30226438/generate-all-permutations-in-go
+func permutations(arr []int64) [][]int64 {
+	var helper func([]int64, int)
+	res := [][]int64{}
+
+	helper = func(arr []int64, n int) {
+		if n == 1 {
+			tmp := make([]int64, len(arr))
+			copy(tmp, arr)
+			res = append(res, tmp)
+		} else {
+			for i := 0; i < n; i++ {
+				helper(arr, n-1)
+				if n%2 == 1 {
+					tmp := arr[i]
+					arr[i] = arr[n-1]
+					arr[n-1] = tmp
+				} else {
+					tmp := arr[0]
+					arr[0] = arr[n-1]
+					arr[n-1] = tmp
+				}
+			}
+		}
+	}
+	helper(arr, len(arr))
+	return res
+}
+
+func TestPermutations(t *testing.T) {
+	arr := []int64{1, 2, 3}
+	assert.Exactly(t, permutations(arr), [][]int64{
+		{1, 2, 3},
+		{2, 1, 3},
+		{3, 2, 1},
+		{2, 3, 1},
+		{3, 1, 2},
+		{1, 3, 2}})
+}
