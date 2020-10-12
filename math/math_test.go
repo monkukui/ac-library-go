@@ -178,3 +178,15 @@ func TestCrt3(t *testing.T) {
 		}
 	}
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L161-L170
+func TestCrtOverflow(t *testing.T) {
+	r0 := int64(0)
+	r1 := int64(1000000000000 - 2)
+	m0 := int64(900577)
+	m1 := int64(1000000000000)
+	rem, mod := Crt([]int64{r0, r1}, []int64{m0, m1})
+	assert.Exactly(t, m0*m1, mod)
+	assert.Exactly(t, r0, rem%m0)
+	assert.Exactly(t, r1, rem%m1)
+}
