@@ -70,3 +70,13 @@ func TestPowMod(t *testing.T) {
 		}
 	}
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L61-L68
+func TestInvBoundHand(t *testing.T) {
+	minll := int64(math.MinInt64)
+	maxll := int64(math.MaxInt64)
+	assert.Exactly(t, InvMod(int64(-1), maxll), InvMod(minll, maxll))
+	assert.Exactly(t, int64(1), InvMod(maxll, maxll-int64(1)))
+	assert.Exactly(t, maxll-int64(1), InvMod(maxll-int64(1), maxll))
+	assert.Exactly(t, int64(2), InvMod(maxll/int64(2)+int64(1), maxll))
+}
