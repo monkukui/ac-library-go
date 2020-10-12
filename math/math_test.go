@@ -19,7 +19,6 @@ func gcd(a, b int64) int64 {
 	return gcd(b, a%b)
 }
 
-// TODO 確認：この鬼のようなキャストはなんとかならないか？
 func powModNaive(x int64, n uint64, mod uint) int64 {
 	y := uint64(uint64(x)%uint64(mod)+uint64(mod)) % uint64(mod)
 	z := uint64(1)
