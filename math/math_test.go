@@ -106,3 +106,16 @@ func TestInvModZero(t *testing.T) {
 		assert.Exactly(t, int64(0), InvMod(math.MaxInt64-i, int64(1)))
 	}
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L92-L103
+func TestFloorSum(t *testing.T) {
+	for n := int64(0); n < 20; n++ {
+		for m := int64(1); m < 20; m++ {
+			for a := int64(0); a < 20; a++ {
+				for b := int64(0); b < 20; b++ {
+					assert.Exactly(t, floorSumNaive(n, m, a, b), FloorSum(n, m, a, b))
+				}
+			}
+		}
+	}
+}
