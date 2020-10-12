@@ -95,3 +95,14 @@ func TestInvMod(t *testing.T) {
 		}
 	}
 }
+
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/math_test.cpp#L82-L90
+func TestInvModZero(t *testing.T) {
+	assert.Exactly(t, int64(0), InvMod(0, 1))
+	for i := int64(0); i < 10; i++ {
+		assert.Exactly(t, int64(0), InvMod(i, int64(1)))
+		assert.Exactly(t, int64(0), InvMod(-i, int64(1)))
+		assert.Exactly(t, int64(0), InvMod(math.MinInt64+i, int64(1)))
+		assert.Exactly(t, int64(0), InvMod(math.MaxInt64-i, int64(1)))
+	}
+}
