@@ -4,10 +4,6 @@ import (
 	internal "github.com/monkukui/ac-library-go/internal/math"
 )
 
-func swap(a, b int64) (int64, int64) {
-	return b, a
-}
-
 func PowMod(x, n int64, m int) int64 {
 	if !(0 <= n && 1 <= m) {
 		panic("")
@@ -54,8 +50,8 @@ func Crt(r, m []int64) (int64, int64) {
 		r1 := internal.SafeMod(r[i], m[i])
 		m1 := m[i]
 		if m0 < m1 {
-			r0, r1 = swap(r0, r1)
-			m0, m1 = swap(m0, m1)
+			r0, r1 = r1, r0
+			m0, m1 = m1, m0
 		}
 		if m0%m1 == 0 {
 			if r0%m1 != r1 {

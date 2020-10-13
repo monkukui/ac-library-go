@@ -219,7 +219,7 @@ func TestCrtBound(t *testing.T) {
 				assert.Exactly(t, lcm, mod)
 				assert.Exactly(t, ans%lcm, rem)
 			}
-			a, b = swap(a, b)
+			a, b = b, a
 		}
 	}
 
