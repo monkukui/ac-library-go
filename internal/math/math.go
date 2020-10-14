@@ -17,22 +17,22 @@ func SafeMod(x, m int64) int64 {
 
 // Fast moduler by barrett reduction
 type Barrett struct {
-	m  uint
-	im uint64
+	M  uint
+	Im uint64
 }
 
 // @param m `1 <= m`
 func New(m uint) *Barrett {
 	return &Barrett{
-		m: m,
+		M: m,
 		// im: uint64(-1)/m + 1,
-		im: math.MaxUint64/uint64(m) + 1,
+		Im: math.MaxUint64/uint64(m) + 1,
 	}
 }
 
 // @return m
 func (barrett *Barrett) Umod() uint {
-	return barrett.m
+	return barrett.M
 }
 
 // @param a `0 <= a < m`
@@ -41,10 +41,10 @@ func (barrett *Barrett) Umod() uint {
 func (barrett *Barrett) Mul(a, b uint) uint {
 	z := uint64(a)
 	z *= uint64(b)
-	x, _ := bits.Mul64(z, barrett.im)
-	v := uint(z - x*uint64(barrett.m))
-	if barrett.m <= v {
-		v += barrett.m
+	x, _ := bits.Mul64(z, barrett.Im)
+	v := uint(z - x*uint64(barrett.M))
+	if barrett.M <= v {
+		v += barrett.M
 	}
 	return v
 }
