@@ -132,7 +132,7 @@ func isPrimeNaive(n int) bool {
 // https://github.com/atcoder/ac-library/blob/master/test/unittest/internal_math_test.cpp#L44-L56
 func TestBarrett(t *testing.T) {
 	for m := uint(1); m <= 100; m++ {
-		bt := New(m)
+		bt := NewBarrett(m)
 		for a := uint(0); a < m; a++ {
 			for b := uint(0); b < m; b++ {
 				assert.Exactly(t, (a*b)%m, bt.Mul(a, b))
@@ -140,7 +140,7 @@ func TestBarrett(t *testing.T) {
 		}
 	}
 
-	bt := New(1)
+	bt := NewBarrett(1)
 	assert.Exactly(t, uint(0), bt.Mul(0, 0))
 }
 
@@ -148,7 +148,7 @@ func TestBarrett(t *testing.T) {
 func TestBarrettBorder(t *testing.T) {
 	modUpper := uint(math.MaxInt32)
 	for mod := modUpper; mod >= modUpper-20; mod-- {
-		bt := New(mod)
+		bt := NewBarrett(mod)
 		var v []uint
 		for i := uint(0); i < 10; i++ {
 			v = append(v, i)
