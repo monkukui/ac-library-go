@@ -11,7 +11,7 @@ func PowMod(x, n int64, m int) int64 {
 	if m == 1 {
 		return 0
 	}
-	bt := internal.New(uint(m))
+	bt := internal.NewBarrett(uint(m))
 	r := uint(1)
 	y := uint(internal.SafeMod(x, int64(m)))
 	for n > 0 {

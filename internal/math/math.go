@@ -22,7 +22,7 @@ type Barrett struct {
 }
 
 // @param m `1 <= m`
-func New(m uint) *Barrett {
+func NewBarrett(m uint) *Barrett {
 	return &Barrett{
 		M: m,
 		// im: uint64(-1)/m + 1,
