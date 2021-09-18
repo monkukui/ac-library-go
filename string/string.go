@@ -5,6 +5,11 @@ import (
 	"sort"
 )
 
+const (
+	ThresholdNaive = 10
+	ThresholdDoubling = 40
+)
+
 func SuffixArrayWithUpper(s []int, upper int) []int {
 	if upper < 0 {
 		panic("upper must be non negative integer")
@@ -14,7 +19,7 @@ func SuffixArrayWithUpper(s []int, upper int) []int {
 			panic("every element of slice must be in range of [0, range]")
 		}
 	}
-	return internal.SAIS(s, upper)
+	return internal.SAIS(s, upper, ThresholdNaive, ThresholdDoubling)
 }
 
 func SuffixArrayInt(s []int) []int {
@@ -34,7 +39,7 @@ func SuffixArrayInt(s []int) []int {
 		}
 		s2[idx[i]] = now
 	}
-	return internal.SAIS(s, now)
+	return internal.SAIS(s, now, ThresholdNaive, ThresholdDoubling)
 }
 
 func SuffixArrayString(s string) []int {
@@ -43,7 +48,7 @@ func SuffixArrayString(s string) []int {
 	for i := 0; i < n; i++ {
 		s2[i] = int(s[i])
 	}
-	return internal.SAIS(s2, 255)
+	return internal.SAIS(s2, 255, ThresholdNaive, ThresholdDoubling)
 }
 
 func LcpArrayInt(s, sa []int) []int {

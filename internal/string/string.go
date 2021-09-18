@@ -57,12 +57,7 @@ func SADoubling(s []int) []int {
 	return sa
 }
 
-const (
-	THRESHOLD_NAIVE    = 10
-	THRESHOLD_DOUBLING = 40
-)
-
-func SAIS(s []int, upper int) []int {
+func SAIS(s []int, upper, thresholdNaive, thresholdDoubling int) []int {
 	n := len(s)
 	if n == 0 {
 		return []int{}
@@ -77,10 +72,10 @@ func SAIS(s []int, upper int) []int {
 			return []int{1, 0}
 		}
 	}
-	if n < THRESHOLD_NAIVE {
+	if n < thresholdNaive{
 		return SANaive(s)
 	}
-	if n < THRESHOLD_DOUBLING {
+	if n < thresholdDoubling{
 		return SADoubling(s)
 	}
 
@@ -197,7 +192,7 @@ func SAIS(s []int, upper int) []int {
 			}
 			recs[lmsMap[sortedLms[i]]] = recUpper
 		}
-		recSa := SAIS(recs, recUpper)
+		recSa := SAIS(recs, recUpper, thresholdNaive, thresholdDoubling)
 		for i := 0; i < m; i++ {
 			sortedLms[i] = lms[recSa[i]]
 		}
