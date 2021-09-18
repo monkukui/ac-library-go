@@ -9,27 +9,27 @@ func TestZAlgorithmString_HandMaid(t *testing.T) {
 	t.Parallel()
 	var tests = []struct {
 		name     string
-		data     string
+		arg     string
 		expected []int
 	}{
 		{
 			name:     "引数が空文字列の時に期待通り動作する",
-			data:     "",
+			arg:     "",
 			expected: []int{},
 		},
 		{
 			name:     "引数が abab の時に期待通り動作する",
-			data:     "abab",
+			arg:     "abab",
 			expected: []int{4, 0, 2, 0},
 		},
 		{
 			name:     "引数が aaaaa の時に期待通り動作する",
-			data:     "aaaaa",
+			arg:     "aaaaa",
 			expected: []int{5, 4, 3, 2, 1},
 		},
 		{
 			name:     "引数が aaabaaaab の時に期待通り動作する", // https://snuke.hatenablog.com/entry/2014/12/03/214243
-			data:     "aaabaaaab",
+			arg:     "aaabaaaab",
 			expected: []int{9, 2, 1, 0, 3, 4, 2, 1, 0},
 		},
 	}
@@ -37,7 +37,7 @@ func TestZAlgorithmString_HandMaid(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			assert.Equal(t, tt.expected, ZAlgorithmString(tt.data))
+			assert.Equal(t, tt.expected, ZAlgorithmString(tt.arg))
 		})
 	}
 }
@@ -45,27 +45,27 @@ func TestZAlgorithmInt_HandMaid(t *testing.T) {
 	t.Parallel()
 	var tests = []struct {
 		name     string
-		data     []int
+		arg     []int
 		expected []int
 	}{
 		{
 			name:     "引数が空スライスの時に期待通り動作する",
-			data:     []int{},
+			arg:     []int{},
 			expected: []int{},
 		},
 		{
 			name:     "引数が {1, 2, 1, 2} の時に期待通り動作する",
-			data:     []int{1, 2, 1, 2},
+			arg:     []int{1, 2, 1, 2},
 			expected: []int{4, 0, 2, 0},
 		},
 		{
 			name:     "引数が {1, 1, 1, 1, 1} の時に期待通り動作する",
-			data:     []int{1, 1, 1, 1, 1},
+			arg:     []int{1, 1, 1, 1, 1},
 			expected: []int{5, 4, 3, 2, 1},
 		},
 		{
 			name:     "引数が {1, 1, 1, 2, 1, 1, 1, 1, 2} の時に期待通り動作する",
-			data:     []int{1, 1, 1, 2, 1, 1, 1, 1, 2},
+			arg:     []int{1, 1, 1, 2, 1, 1, 1, 1, 2},
 			expected: []int{9, 2, 1, 0, 3, 4, 2, 1, 0},
 		},
 	}
@@ -73,7 +73,7 @@ func TestZAlgorithmInt_HandMaid(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			assert.Equal(t, tt.expected, ZAlgorithmInt(tt.data))
+			assert.Equal(t, tt.expected, ZAlgorithmInt(tt.arg))
 		})
 	}
 }
