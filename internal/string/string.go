@@ -2,7 +2,7 @@ package string
 
 import "sort"
 
-func saNaive(s []int) []int {
+func SANaive(s []int) []int {
 	n := len(s)
 	sa := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -24,7 +24,7 @@ func saNaive(s []int) []int {
 	return sa
 }
 
-func saDoubling(s []int) []int {
+func SADoubling(s []int) []int {
 	n := len(s)
 	sa, rnk, tmp := make([]int, n), s, make([]int, n)
 	for i := 0; i < n; i++ {
@@ -62,7 +62,7 @@ const (
 	THRESHOLD_DOUBLING = 40
 )
 
-func sais(s []int, upper int) []int {
+func SAIS(s []int, upper int) []int {
 	n := len(s)
 	if n == 0 {
 		return []int{}
@@ -78,10 +78,10 @@ func sais(s []int, upper int) []int {
 		}
 	}
 	if n < THRESHOLD_NAIVE {
-		return saNaive(s)
+		return SANaive(s)
 	}
 	if n < THRESHOLD_DOUBLING {
-		return saDoubling(s)
+		return SADoubling(s)
 	}
 
 	sa := make([]int, n)
@@ -197,7 +197,7 @@ func sais(s []int, upper int) []int {
 			}
 			recs[lmsMap[sortedLms[i]]] = recUpper
 		}
-		recSa := sais(recs, recUpper)
+		recSa := SAIS(recs, recUpper)
 		for i := 0; i < m; i++ {
 			sortedLms[i] = lms[recSa[i]]
 		}
