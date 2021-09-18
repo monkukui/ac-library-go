@@ -26,22 +26,6 @@ func saNaive(s []int) []int {
 	return sa
 }
 
-// https://github.com/atcoder/ac-library/blob/master/test/unittest/string_test.cpp#L24-L33
-func lcpNaive(s, sa []int) []int {
-	n := len(s)
-	if n == 0 {
-		panic("")
-	}
-	lcp := make([]int, n-1)
-	for i := 0; i < n-1; i++ {
-		l, r := sa[i], sa[i+1]
-		for l+lcp[i] < n && r+lcp[i] < n && s[l+lcp[i]] == s[r+lcp[i]] {
-			lcp[i]++
-		}
-	}
-	return lcp
-}
-
 // https://github.com/atcoder/ac-library/blob/master/test/unittest/string_test.cpp#L91-L124
 func TestInternalSANaive(t *testing.T) {
 	for n := 1; n <= 5; n++ {
