@@ -1,16 +1,16 @@
 package segtree
 
 type SegTree struct {
-	d []interface{}
+	d  []interface{}
 	op func(a, b interface{}) interface{}
-	e func() interface{}
+	e  func() interface{}
 }
 
 func New(d []interface{}, op func(a, b interface{}) interface{}, e func() interface{}) *SegTree {
 	return &SegTree{
-		d: d,
+		d:  d,
 		op: op,
-		e: e,
+		e:  e,
 	}
 }
 
