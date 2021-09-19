@@ -40,18 +40,33 @@ func TestSAAllA(t *testing.T) {
 func TestSAAllAB(t *testing.T) {
 	for n := 1; n <= 100; n++ {
 		s := make([]int, n)
+		ab := ""
 		for i := 0; i < n; i++ {
 			s[i] = i % 2
+			if i%2 == 0 {
+				ab += "a"
+			} else {
+				ab += "b"
+			}
 		}
+
 		assert.Equal(t, internal.SANaive(s), SuffixArrayInt(s))
+		assert.Equal(t, internal.SANaive(s), SuffixArrayString(ab))
 		assert.Equal(t, internal.SANaive(s), SuffixArrayWithUpper(s, 3))
 	}
 	for n := 1; n <= 100; n++ {
 		s := make([]int, n)
+		ab := ""
 		for i := 0; i < n; i++ {
 			s[i] = 1 - i%2
+			if i%2 == 0 {
+				ab += "b"
+			} else {
+				ab += "a"
+			}
 		}
 		assert.Equal(t, internal.SANaive(s), SuffixArrayInt(s))
+		assert.Equal(t, internal.SANaive(s), SuffixArrayString(ab))
 		assert.Equal(t, internal.SANaive(s), SuffixArrayWithUpper(s, 3))
 	}
 }

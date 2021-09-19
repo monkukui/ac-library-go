@@ -13,7 +13,8 @@ func saNaive(s []int) []int {
 	for i := 0; i < n; i++ {
 		sa[i] = i
 	}
-	sort.Slice(sa, func(l, r int) bool {
+	sort.Slice(sa, func(i, j int) bool {
+		l, r := sa[i], sa[j]
 		for ; l < n && r < n; {
 			if s[l] != s[r] {
 				return s[l] < s[r]
@@ -135,4 +136,3 @@ func TestInternalSAIS(t *testing.T) {
 		}
 	}
 }
-

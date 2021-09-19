@@ -1,14 +1,19 @@
 package string
 
-import "sort"
+import (
+	"sort"
+)
 
-func SANaive(s []int) []int {
+func SANaive(ss []int) []int {
+	s := make([]int, len(ss))
+	copy(s, ss)
 	n := len(s)
 	sa := make([]int, n)
 	for i := 0; i < n; i++ {
 		sa[i] = i
 	}
-	sort.Slice(sa, func(l, r int) bool {
+	sort.Slice(sa, func(i, j int) bool {
+		l, r := sa[i], sa[j]
 		if l == r {
 			return false
 		}
@@ -24,14 +29,17 @@ func SANaive(s []int) []int {
 	return sa
 }
 
-func SADoubling(s []int) []int {
+func SADoubling(ss []int) []int {
+	s := make([]int, len(ss))
+	copy(s, ss)
 	n := len(s)
 	sa, rnk, tmp := make([]int, n), s, make([]int, n)
 	for i := 0; i < n; i++ {
 		sa[i] = i
 	}
 	for k := 1; k < n; k *= 2 {
-		cmp := func(x, y int) bool {
+		cmp := func(i, j int) bool {
+			x, y := sa[i], sa[j]
 			if rnk[x] != rnk[y] {
 				return rnk[x] < rnk[y]
 			}
@@ -48,7 +56,7 @@ func SADoubling(s []int) []int {
 		tmp[sa[0]] = 0
 		for i := 1; i < n; i++ {
 			tmp[sa[i]] = tmp[sa[i-1]]
-			if cmp(sa[i-1], sa[i]) {
+			if cmp(i-1, i) {
 				tmp[sa[i]]++
 			}
 		}
@@ -57,7 +65,9 @@ func SADoubling(s []int) []int {
 	return sa
 }
 
-func SAIS(s []int, upper, thresholdNaive, thresholdDoubling int) []int {
+func SAIS(ss []int, upper, thresholdNaive, thresholdDoubling int) []int {
+	s := make([]int, len(ss))
+	copy(s, ss)
 	n := len(s)
 	if n == 0 {
 		return []int{}
@@ -72,10 +82,10 @@ func SAIS(s []int, upper, thresholdNaive, thresholdDoubling int) []int {
 			return []int{1, 0}
 		}
 	}
-	if n < thresholdNaive{
+	if n < thresholdNaive {
 		return SANaive(s)
 	}
-	if n < thresholdDoubling{
+	if n < thresholdDoubling {
 		return SADoubling(s)
 	}
 
@@ -129,33 +139,33 @@ func SAIS(s []int, upper, thresholdNaive, thresholdDoubling int) []int {
 		copy(buf, suml)
 		for i := n - 1; i >= 0; i-- {
 			v := sa[i]
-			if v >= 1 && ls[v - 1] {
-				sa[buf[s[v - 1] + 1] - 1] = v - 1
-				buf[s[v - 1] + 1]--
+			if v >= 1 && ls[v-1] {
+				sa[buf[s[v-1]+1]-1] = v - 1
+				buf[s[v-1]+1]--
 			}
 		}
 	}
-	lmsMap := make([]int, n + 1)
+	lmsMap := make([]int, n+1)
 	for i := 0; i < len(lmsMap); i++ {
 		lmsMap[i] = -1
 	}
 	m := 0
 	for i := 1; i < n; i++ {
-		if !ls[i - 1] && ls[i] {
+		if !ls[i-1] && ls[i] {
 			lmsMap[i] = m
 			m++
 		}
 	}
 	lms := make([]int, 0, m)
 	for i := 1; i < n; i++ {
-		if !ls[i - 1] && ls[i] {
+		if !ls[i-1] && ls[i] {
 			lms = append(lms, i)
 		}
 	}
 	induce(lms)
 	if m > 0 {
 		sortedLms := make([]int, 0, m)
-		for _, v := range(sa) {
+		for _, v := range sa {
 			if lmsMap[v] != -1 {
 				sortedLms = append(sortedLms, v)
 			}
@@ -164,16 +174,16 @@ func SAIS(s []int, upper, thresholdNaive, thresholdDoubling int) []int {
 		recUpper := 0
 		recs[lmsMap[sortedLms[0]]] = 0
 		for i := 1; i < m; i++ {
-			l, r := sortedLms[i - 1], sortedLms[i]
+			l, r := sortedLms[i-1], sortedLms[i]
 			endl, endr := n, n
-			if lmsMap[l] + 1 < m {
-				endl = lms[lmsMap[l] + 1]
+			if lmsMap[l]+1 < m {
+				endl = lms[lmsMap[l]+1]
 			}
-			if lmsMap[r] + 1 < m {
-				endr = lms[lmsMap[r] + 1]
+			if lmsMap[r]+1 < m {
+				endr = lms[lmsMap[r]+1]
 			}
 			same := true
-			if endl - l != endr - r {
+			if endl-l != endr-r {
 				same = false
 			} else {
 				for l < endl {

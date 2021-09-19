@@ -1,45 +1,50 @@
 package string
 
 import (
+	"fmt"
 	internal "github.com/monkukui/ac-library-go/internal/string"
 	"sort"
 )
 
 const (
-	ThresholdNaive = 10
+	ThresholdNaive    = 10
 	ThresholdDoubling = 40
 )
 
 func SuffixArrayWithUpper(s []int, upper int) []int {
+	ss := append([]int{}, s...)
 	if upper < 0 {
 		panic("upper must be non negative integer")
 	}
-	for _, d := range(s) {
+	for _, d := range ss {
 		if d < 0 || upper < d {
-			panic("every element of slice must be in range of [0, range]")
+			panic(fmt.Sprintf("you got %d, but every element of slice must be in range of [0, %d]", d, upper))
 		}
 	}
-	return internal.SAIS(s, upper, ThresholdNaive, ThresholdDoubling)
+	return internal.SAIS(ss, upper, ThresholdNaive, ThresholdDoubling)
 }
 
 func SuffixArrayInt(s []int) []int {
-	n := len(s)
+	ss := make([]int, len(s))
+	copy(ss, s)
+	n := len(ss)
 	idx := make([]int, n)
 	for i := 0; i < n; i++ {
 		idx[i] = i
 	}
-	sort.Slice(idx, func (l, r int) bool {
-		return s[l] < s[r]
+	sort.Slice(idx, func(i, j int) bool {
+		l, r := idx[i], idx[j]
+		return ss[l] < ss[r]
 	})
 	s2 := make([]int, n)
 	now := 0
 	for i := 0; i < n; i++ {
-		if i > 0 && s[idx[i - 1]] != s[idx[i]] {
+		if i > 0 && ss[idx[i-1]] != ss[idx[i]] {
 			now++
 		}
 		s2[idx[i]] = now
 	}
-	return internal.SAIS(s, now, ThresholdNaive, ThresholdDoubling)
+	return internal.SAIS(s2, now, ThresholdNaive, ThresholdDoubling)
 }
 
 func SuffixArrayString(s string) []int {
@@ -60,7 +65,7 @@ func LcpArrayInt(s, sa []int) []int {
 	for i := 0; i < n; i++ {
 		rnk[sa[i]] = i
 	}
-	lcp := make([]int, n - 1)
+	lcp := make([]int, n-1)
 	h := 0
 	for i := 0; i < n; i++ {
 		if h > 0 {
@@ -69,13 +74,13 @@ func LcpArrayInt(s, sa []int) []int {
 		if rnk[i] == 0 {
 			continue
 		}
-		j := sa[rnk[i] - 1]
-		for ; j + h < n && i + h < n; h++ {
-			if s[j + h] != s[i + h] {
+		j := sa[rnk[i]-1]
+		for ; j+h < n && i+h < n; h++ {
+			if s[j+h] != s[i+h] {
 				break
 			}
 		}
-		lcp[rnk[i] - 1] = h
+		lcp[rnk[i]-1] = h
 	}
 	return lcp
 }
