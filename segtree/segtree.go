@@ -6,7 +6,11 @@ type SegTree struct {
 	e  func() interface{}
 }
 
-func New(d []interface{}, op func(a, b interface{}) interface{}, e func() interface{}) *SegTree {
+func New(op func(a, b interface{}) interface{}, e func() interface{}, n int) *SegTree {
+	d := make([]interface{}, n)
+	for i := 0; i < n; i++ {
+		d[i] = e()
+	}
 	return &SegTree{
 		d:  d,
 		op: op,

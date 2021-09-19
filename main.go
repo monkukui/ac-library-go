@@ -3,19 +3,22 @@ package main
 import (
 	"fmt"
 	"github.com/monkukui/ac-library-go/segtree"
+	"math"
 )
 
 func main() {
-	initData := []interface{}{1, 2, 3, 4, 5}
 	op := func(a, b interface{}) interface{} {
 		aa, _ := a.(int)
 		bb, _ := b.(int)
-		return aa + bb
+		if aa < bb {
+			return aa
+		}
+		return bb
 	}
 	e := func() interface{} {
-		return 0
+		return math.MaxInt64
 	}
-	rmq := segtree.New(initData, op, e)
+	rmq := segtree.New(op, e, 10)
 
 	fmt.Println(rmq.Get(3))
 	fmt.Println(rmq.Prod(2, 4))
