@@ -1,20 +1,48 @@
 package segtree
 
+import (
+	internal "github.com/monkukui/ac-library-go/internal/bit"
+)
 type SegTree struct {
-	d  []interface{}
-	op func(a, b interface{}) interface{}
-	e  func() interface{}
+	n, size, log int
+	d            []interface{}
+	op           func(a, b interface{}) interface{}
+	e            func() interface{}
+}
+
+func (s *SegTree) update(k int) {
+	s.d[k] = s.op(s.d[2*k], s.d[2*k+1])
 }
 
 func New(op func(a, b interface{}) interface{}, e func() interface{}, n int) *SegTree {
-	d := make([]interface{}, n)
+	v := make([]interface{}, n)
 	for i := 0; i < n; i++ {
+		v[i] = e()
+	}
+	return NewBySlice(op, e, v)
+}
+func NewBySlice(op func(a, b interface{}) interface{}, e func() interface{}, v []interface{}) *SegTree {
+	n := len(v)
+	log := internal.CeilPow2(n)
+	size := 1 << log
+	d := make([]interface{}, 2 * size)
+	for i := 0; i < 2 * size; i++ {
 		d[i] = e()
 	}
+	for i := 0; i < n; i++ {
+		d[size + i] = v[i]
+	}
+	for i := size - 1; i >= 1; i-- {
+		d[i] = op(d[2 * i], d[2 * i + 1])
+	}
+
 	return &SegTree{
-		d:  d,
-		op: op,
-		e:  e,
+		n:    n,
+		size: size,
+		log:  log,
+		d:    d,
+		op:   op,
+		e:    e,
 	}
 }
 
@@ -36,4 +64,12 @@ func (s *SegTree) Prod(l, r int) interface{} {
 
 func (s *SegTree) AllProd() interface{} {
 	return s.Prod(0, len(s.d))
+}
+
+func (s *SegTree) MaxRight(l int, f func(x interface{}) bool) int {
+	panic("implement me!!")
+}
+
+func (s *SegTree) MinLeft(r int, f func(x interface{}) bool) int {
+	panic("implement me!!")
 }
