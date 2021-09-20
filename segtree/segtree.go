@@ -63,7 +63,7 @@ func (s *SegTree) Get(p int) interface{} {
 	if p < 0 || s.n <= p {
 		panic("")
 	}
-	return s.d[p + s.size]
+	return s.d[p+s.size]
 }
 
 func (s *SegTree) Prod(l, r int) interface{} {
@@ -75,11 +75,11 @@ func (s *SegTree) Prod(l, r int) interface{} {
 	r += s.size
 
 	for l < r {
-		if l & 1 > 0 {
+		if l&1 > 0 {
 			sml = s.op(sml, s.d[l])
 			l++
 		}
-		if r & 1 > 0 {
+		if r&1 > 0 {
 			r--
 			smr = s.op(s.d[r], smr)
 		}
@@ -94,9 +94,71 @@ func (s *SegTree) AllProd() interface{} {
 }
 
 func (s *SegTree) MaxRight(l int, f func(x interface{}) bool) int {
-	panic("implement me!!")
+	if l < 0 || s.n < l {
+		panic("")
+	}
+	if !f(s.e()) {
+		panic("")
+	}
+	if l == s.n {
+		return s.n
+	}
+	l += s.size
+	sm := s.e()
+	for {
+		for ; l%2 == 0; {
+			l >>= 1
+		}
+		if !f(s.op(sm, s.d[l])) {
+			for l < s.size {
+				l = 2 * l
+				if f(s.op(sm, s.d[l])) {
+					sm = s.op(sm, s.d[l])
+					l++
+				}
+			}
+			return l - s.size
+		}
+		sm = s.op(sm, s.d[l])
+		l++
+		if (l & -l) != l {
+			break
+		}
+	}
+	return s.n
 }
 
 func (s *SegTree) MinLeft(r int, f func(x interface{}) bool) int {
-	panic("implement me!!")
+	if r < 0 || s.n < r {
+		panic("")
+	}
+	if !f(s.e()) {
+		panic("")
+	}
+	if r == 0 {
+		return 0
+	}
+	r += s.size
+	sm := s.e()
+	for {
+		r--
+		for ; r > 1 && r%2 == 1; {
+			r >>= 1
+		}
+		if !f(s.op(s.d[r], sm)) {
+			for r < s.size {
+				r = 2 * r + 1
+				if f(s.op(s.d[r], sm)) {
+					sm = s.op(s.d[r], sm)
+					r--
+				}
+			}
+			return r + 1 - s.size
+		}
+		sm = s.op(s.d[r], sm)
+		if (r & -r) != r {
+			break
+		}
+	}
+	return 0
 }
