@@ -121,7 +121,7 @@ func (s *SegTree) MaxRight(l int, f func(x interface{}) bool) int {
 		}
 		sm = s.op(sm, s.d[l])
 		l++
-		if (l & -l) != l {
+		if (l & -l) == l {
 			break
 		}
 	}
@@ -156,7 +156,7 @@ func (s *SegTree) MinLeft(r int, f func(x interface{}) bool) int {
 			return r + 1 - s.size
 		}
 		sm = s.op(s.d[r], sm)
-		if (r & -r) != r {
+		if (r & -r) == r {
 			break
 		}
 	}
