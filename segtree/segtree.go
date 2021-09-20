@@ -147,7 +147,7 @@ func (s *SegTree) MinLeft(r int, f func(x interface{}) bool) int {
 		}
 		if !f(s.op(s.d[r], sm)) {
 			for r < s.size {
-				r = 2 * r + 1
+				r = 2*r + 1
 				if f(s.op(s.d[r], sm)) {
 					sm = s.op(s.d[r], sm)
 					r--
