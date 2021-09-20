@@ -139,6 +139,7 @@ func TestSegTree_Invalid(t *testing.T) {
 	})
 }
 
+// https://github.com/atcoder/ac-library/blob/master/test/unittest/segtree_test.cpp#L102-L141
 func TestSegtree_CompareNaive(t *testing.T) {
 	for n := 0; n < 30; n++ {
 		seg0 := NewSegTreeNaive(n)
@@ -184,6 +185,5 @@ func TestSegtree_CompareNaive(t *testing.T) {
 				}))
 			}
 		}
-
 	}
 }
