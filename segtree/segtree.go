@@ -51,7 +51,6 @@ func (s *SegTree) Set(p int, x interface{}) {
 	if p < 0 || s.n <= p {
 		panic("")
 	}
-	s.d[p] = x
 	p += s.size
 	s.d[p] = x
 	for i := 1; i <= s.log; i++ {
