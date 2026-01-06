@@ -2,8 +2,9 @@ package string
 
 import (
 	"fmt"
-	internal "github.com/monkukui/ac-library-go/internal/string"
 	"sort"
+
+	internal "github.com/monkukui/ac-library-go/internal/string"
 )
 
 const (
@@ -111,6 +112,9 @@ func ZAlgorithmInt(s []int) []int {
 		}
 		for i+*k < n && s[*k] == s[i+*k] {
 			*k++
+		}
+		if j+z[j] < i+z[i] {
+			j = i
 		}
 	}
 	z[0] = n
