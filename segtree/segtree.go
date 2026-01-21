@@ -4,29 +4,30 @@ import (
 	internal "github.com/monkukui/ac-library-go/internal/bit"
 )
 
-type SegTree struct {
+type SegTree[T any] struct {
 	n, size, log int
-	d            []interface{}
-	op           func(a, b interface{}) interface{}
-	e            func() interface{}
+	d            []T
+	op           func(a, b T) T
+	e            func() T
 }
 
-func (s *SegTree) update(k int) {
+func (s *SegTree[T]) update(k int) {
 	s.d[k] = s.op(s.d[2*k], s.d[2*k+1])
 }
 
-func New(op func(a, b interface{}) interface{}, e func() interface{}, n int) *SegTree {
-	v := make([]interface{}, n)
+func New[T any](op func(a, b T) T, e func() T, n int) *SegTree[T] {
+	v := make([]T, n)
 	for i := 0; i < n; i++ {
 		v[i] = e()
 	}
 	return NewBySlice(op, e, v)
 }
-func NewBySlice(op func(a, b interface{}) interface{}, e func() interface{}, v []interface{}) *SegTree {
+
+func NewBySlice[T any](op func(a, b T) T, e func() T, v []T) *SegTree[T] {
 	n := len(v)
-	log := internal.CeilPow2(n)
+	log := CeilPow2(n)
 	size := 1 << log
-	d := make([]interface{}, 2*size)
+	d := make([]T, 2*size)
 	for i := 0; i < 2*size; i++ {
 		d[i] = e()
 	}
@@ -37,7 +38,7 @@ func NewBySlice(op func(a, b interface{}) interface{}, e func() interface{}, v [
 		d[i] = op(d[2*i], d[2*i+1])
 	}
 
-	return &SegTree{
+	return &SegTree[T]{
 		n:    n,
 		size: size,
 		log:  log,
@@ -47,7 +48,7 @@ func NewBySlice(op func(a, b interface{}) interface{}, e func() interface{}, v [
 	}
 }
 
-func (s *SegTree) Set(p int, x interface{}) {
+func (s *SegTree[T]) Set(p int, x T) {
 	if p < 0 || s.n <= p {
 		panic("")
 	}
@@ -58,14 +59,14 @@ func (s *SegTree) Set(p int, x interface{}) {
 	}
 }
 
-func (s *SegTree) Get(p int) interface{} {
+func (s *SegTree[T]) Get(p int) T {
 	if p < 0 || s.n <= p {
 		panic("")
 	}
 	return s.d[p+s.size]
 }
 
-func (s *SegTree) Prod(l, r int) interface{} {
+func (s *SegTree[T]) Prod(l, r int) T {
 	if l < 0 || r < l || s.n < r {
 		panic("")
 	}
@@ -88,11 +89,11 @@ func (s *SegTree) Prod(l, r int) interface{} {
 	return s.op(sml, smr)
 }
 
-func (s *SegTree) AllProd() interface{} {
+func (s *SegTree[T]) AllProd() T {
 	return s.d[1]
 }
 
-func (s *SegTree) MaxRight(l int, f func(x interface{}) bool) int {
+func (s *SegTree[T]) MaxRight(l int, f func(x T) bool) int {
 	if l < 0 || s.n < l {
 		panic("")
 	}
@@ -105,7 +106,7 @@ func (s *SegTree) MaxRight(l int, f func(x interface{}) bool) int {
 	l += s.size
 	sm := s.e()
 	for {
-		for ; l%2 == 0; {
+		for l%2 == 0 {
 			l >>= 1
 		}
 		if !f(s.op(sm, s.d[l])) {
@@ -127,7 +128,7 @@ func (s *SegTree) MaxRight(l int, f func(x interface{}) bool) int {
 	return s.n
 }
 
-func (s *SegTree) MinLeft(r int, f func(x interface{}) bool) int {
+func (s *SegTree[T]) MinLeft(r int, f func(x T) bool) int {
 	if r < 0 || s.n < r {
 		panic("")
 	}
@@ -141,7 +142,7 @@ func (s *SegTree) MinLeft(r int, f func(x interface{}) bool) int {
 	sm := s.e()
 	for {
 		r--
-		for ; r > 1 && r%2 == 1; {
+		for r > 1 && r%2 == 1 {
 			r >>= 1
 		}
 		if !f(s.op(s.d[r], sm)) {
